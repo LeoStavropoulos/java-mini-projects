@@ -17,12 +17,13 @@ import java.util.Scanner;
  */
 public class ContactList {
 
-    public static String[][] contacts = new String[500][3];
+    static String[][] contacts = new String[500][3];
+    static int lastContact = -1;
 
 
     public static void main(String[] args) {
 
-        showMenu();
+        runApp();
         System.out.println("**************************************************************");
         System.out.println("******************* Έξοδος από το πρόγραμμα ******************");
 
@@ -34,12 +35,11 @@ public class ContactList {
      * Διαβάζει από το πληκτρολόγιο τις επιλογές του
      * χρήστη και καλεί τις ανάλογες μεθόδους.
      */
-    public static void showMenu () {
+    public static void runApp() {
         Scanner in = new Scanner(System.in);
         int choice = 0;
         int position = -1;
         int searchType = 0;
-        int lastContact = -1;
         int phonePosition = -1;
         int updateField = -1;
         int order = -1;
@@ -101,7 +101,7 @@ public class ContactList {
                                 System.out.println("Παρακαλώ δώστε όνομα:");
                                 firstName = in.next();
 
-                                position = searchContact(lastName, firstName, lastContact);
+                                position = getIndexByName(lastName, firstName);
 
                                 if (position == -1) {
                                     System.out.println("Η επαφή δε βρέθηκε.");
@@ -115,7 +115,7 @@ public class ContactList {
                                 phoneNumber = in.next();
 
 
-                                position = searchPhoneNumber(phoneNumber, lastContact);
+                                position = getIndexByPhoneNumber(phoneNumber);
 
                                 if (position == -1) {
                                     System.out.println("Ο αριθμός δεν αντιστοιχεί σε επαφή.");
@@ -142,20 +142,20 @@ public class ContactList {
                     System.out.println("Παρακαλώ δώστε όνομα:");
                     firstName = in.next();
 
-                    position = searchContact(lastName, firstName, lastContact);
+                    position = getIndexByName(lastName, firstName);
 
                     if (position == -1) {
                         System.out.println("Παρακαλώ δώστε τον αριθμό τηλεφώνου της επαφής:");
                         phoneNumber = in.next();
 
-                        phonePosition = searchPhoneNumber(phoneNumber, lastContact);
+                        phonePosition = getIndexByPhoneNumber(phoneNumber);
 
                         if (phonePosition != -1) {
                             System.out.printf("Ο αριθμός τηλεφώνου υπάρχει ήδη, στην επαφή: %s %s", contacts[phonePosition][0], contacts[phonePosition][1]);
                             break;
                         }
 
-                        lastContact = insertContact(lastName, firstName, phoneNumber, lastContact);
+                        insertContact(lastName, firstName, phoneNumber);
 
                         System.out.println("Η επαφή δημιουργήθηκε επιτυχώς!");
                     } else {
@@ -170,7 +170,7 @@ public class ContactList {
                     System.out.println("Παρακαλώ δώστε όνομα:");
                     firstName = in.next();
 
-                    position = searchContact(lastName, firstName, lastContact);
+                    position = getIndexByName(lastName, firstName);
                     if (position == -1) {
                         System.out.println("Δεν υπάρχει υπάρχει επαφή με τα στοιχεία που δώσατε!");
                         return;
@@ -226,7 +226,7 @@ public class ContactList {
                     System.out.println("Παρακαλώ δώστε όνομα:");
                     firstName = in.next();
 
-                    position = searchContact(lastName, firstName, lastContact);
+                    position = getIndexByName(lastName, firstName);
                     if (position == -1) {
                         System.out.println("Δεν υπάρχει υπάρχει επαφή με τα στοιχεία που δώσατε!");
                         return;
@@ -238,7 +238,7 @@ public class ContactList {
 
                     deleted = deleted.concat("\b\b}");
 
-                    lastContact = deleteContact(position, lastContact);
+                    deleteContact(position);
 
                     System.out.printf("Η επαφή: %s διαγράφηκε επιτυχώς.%n", deleted);
 
@@ -257,7 +257,7 @@ public class ContactList {
 
                     System.out.println("***************** {Επώνυμο, Όνομα, Τηλέφωνο} *****************");
 
-                    sortContacts(order, lastContact + 1);
+                    sortAndDisplayContacts(order);
 
                     break;
                 case 6:
@@ -273,10 +273,9 @@ public class ContactList {
      *
      * @param lastname      Επώνυμο επαφής
      * @param firstname     Όνομα επαφής
-     * @param lastContact   Θέση τελευταίας επαφής του καταλόγου
      * @return              Θέση επαφής ή -1 αν δε βρεθεί
      */
-    public static int searchContact(String lastname, String firstname, int lastContact) {
+    public static int getIndexByName(String lastname, String firstname) {
 
         for (int i = 0; i <= lastContact; i++) {
             if ((contacts[i][0].equals(lastname)) && (contacts[i][1].equals(firstname))) return i;
@@ -289,10 +288,9 @@ public class ContactList {
      * Αναζητά αν υπάρχει επαφή με τον αριθμό τηλεφώνου που δέχεται ως είσοδο.
      *
      * @param phoneNumber       Αριθμός τηλεφώνου
-     * @param lastContact       Θέση τελευταίας επαφής του καταλόγου
      * @return                  Θέση επαφής ή -1 αν δε βρεθεί
      */
-    public static int searchPhoneNumber(String phoneNumber, int lastContact) {
+    public static int getIndexByPhoneNumber(String phoneNumber) {
 
         for (int i = 0; i <= lastContact; i++) {
             if (contacts[i][2].equals(phoneNumber)) return i;
@@ -307,15 +305,11 @@ public class ContactList {
      * @param lastName      Επώνυμο νέας επαφής
      * @param firstName     Όνομα νέας επαφής
      * @param phoneNumber   Αριθμός τηλεφώνου νέας επαφής
-     * @param lastContact   Θέση τελευταίας επαφής του καταλόγου
-     * @return              Θέση νέας επαφής (που είναι κι η τελευταία του καταλόγου)
      */
-    public static int insertContact (String lastName, String firstName, String phoneNumber, int lastContact) {
+    public static void insertContact(String lastName, String firstName, String phoneNumber) {
         contacts[++lastContact] [0] = lastName;
         contacts[lastContact] [1] = firstName;
         contacts[lastContact] [2] = phoneNumber;
-
-        return lastContact;
     }
 
     /**
@@ -335,10 +329,8 @@ public class ContactList {
      * Τα στοιχεία της επαφής ουσιαστικά δε διαγράφονται, αλλά μετατοπίζονται στη θέση lastContact + 1!
      *
      * @param position      Θέση επαφής προς διαγραφή
-     * @param lastContact   Θέση τελευταίας επαφής καταλόγου
-     * @return              Νέος δείκτης τελευταίας θέσης
      */
-    public static int deleteContact (int position, int lastContact) {
+    public static void deleteContact(int position) {
 
         lastContact--; // Η τελευταία επαφή θα υπάρχει και στη θέση lastContact και στη θέση lastContact + 1.
 
@@ -348,28 +340,27 @@ public class ContactList {
             }
         }
 
-        return lastContact;
     }
 
     /**
      * Εκχωρεί τις επαφές σ ένα προσωρινό πίνακα, τον οποίο ταξινομεί με βάση το επώνυμο
      * και εκτυπώνει τα ταξινομημένα, πλέον, στοιχεία.
+     *  @param order             Επιλογή αύξουσας ή φθίνουσας ταξινόμησης
      *
-     * @param order             Επιλογή αύξουσας ή φθίνουσας ταξινόμησης
-     * @param lastContact       Θέση τελευταίας επαφής καταλόγου
      */
-    public static void sortContacts(int order, int lastContact) {
+    public static void sortAndDisplayContacts(int order) {
         String[][] tmp = new String[500][3];
+        int pivot = lastContact + 1;
 
-        tmp = Arrays.copyOf(contacts, lastContact);
+        tmp = Arrays.copyOf(contacts, pivot);
 
         if (order == 0) {
-            Arrays.sort(tmp, 0, lastContact, (a1, a2) -> a1[0].compareTo(a2[0]) );
+            Arrays.sort(tmp, 0, pivot, (a1, a2) -> a1[0].compareTo(a2[0]) );
         } else {
-            Arrays.sort(tmp, 0, lastContact, (a1, a2) -> a2[0].compareTo(a1[0]));
+            Arrays.sort(tmp, 0, pivot, (a1, a2) -> a2[0].compareTo(a1[0]));
         }
 
-        for (int i = 0; i < lastContact; i++) {
+        for (int i = 0; i < pivot; i++) {
             System.out.print("\t\t\t\t{");
             for (int j = 0; j < 3; j++) {
                 System.out.print(tmp[i][j] + ", ");
