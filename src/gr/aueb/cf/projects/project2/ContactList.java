@@ -4,14 +4,13 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Πρόγραμμα διαχείρισης λίστας επαφών. Μπορεί να δεχθεί έως 500 επαφές,
- * η καθεμία από τις οποίες περιέχει Επώνυμο, Όνομα και Αριθμό Τηλεφώνου.
- * Υποθέτουμε ότι κάθε επαφή είναι μοναδική, δηλαδή δεν υπάρχει άλλη επαφή
- * με το ίδιο ονοματεπώνυμο ή αριθμό τηλεφώνου.
- * Ο χρήστης έχει τις εξής επιλογές: αναζήτηση επαφής με βάση το ονοματεπώνυμο ή
- * τον αριθμό τηλεφώνου, δημιουργία νέας επαφής (εφόσον τα στοιχεία που καταχωρεί
- * δεν υπάρχουν ήδη), ενημέρωση των στοιχείων της επαφής, διαγραφή επαφής, καθώς και
- * εμφάνιση του καταλόγου επαφών με αύξουσα ή φθίνουσα αλφαβητική σειρά (με βάση το επώνυμο).
+ * Contact List management system. It can store up to 500 contacts, having Lastname,
+ * Firstname and Phone Number fields. Each contact should be unique, meaning that
+ * there should not be any other contact having the same name or number.
+ * The user is given the following choices: Contact Search, by name or number,
+ * New Contact Insertion , provided that the given details do not already exist,
+ * Contact Update, Contact Deletion, provided that the given contact exists,
+ * Contact List Display, sorted by lastname, either in ascending or descending order.
  *
  * @author L. Stavropoulos
  */
@@ -25,15 +24,14 @@ public class ContactList {
 
         runApp();
         System.out.println("**************************************************************");
-        System.out.println("******************* Έξοδος από το πρόγραμμα ******************");
+        System.out.println("******************* Exiting programme ******************");
 
     }
 
     /**
-     * Εμφανίζει το μενού επιλογών προς το χρήστη
-     * και διαχειρίζεται την επικοινωνία με αυτόν.
-     * Διαβάζει από το πληκτρολόγιο τις επιλογές του
-     * χρήστη και καλεί τις ανάλογες μεθόδους.
+     * Displays a menu o choices to the user and manages
+     * the communication with them. Gets the user's choices
+     * and calls the corresponding methods.
      */
     public static void runApp() {
         Scanner in = new Scanner(System.in);
@@ -66,69 +64,69 @@ public class ContactList {
 
         //----------------------------------------------------------------
 
-        System.out.println("********************** Κατάλογος Επαφών **********************");
+        System.out.println("********************** Contact List **********************");
 
         for(;;) {
             System.out.println("**************************************************************");
-            System.out.println("Παρακαλώ δώστε έναν ακέραιο σύμφωνα με τις παρακάτω επιλογές: ");
-            System.out.println("1. Αναζήτηση Επαφής");
-            System.out.println("2. Δημιουργία Νέας Επαφής");
-            System.out.println("3. Ενημέρωση Επαφής");
-            System.out.println("4. Διαγραφή Επαφής");
-            System.out.println("5. Εμφάνιση Επαφών");
-            System.out.println("6. Έξοδος");
+            System.out.println("Please enter an integer, corresponding to one of the following choices: ");
+            System.out.println("1. Search Contacts");
+            System.out.println("2. Create New Contact");
+            System.out.println("3. Update Contact");
+            System.out.println("4. Delete Contact");
+            System.out.println("5. Display Contact List");
+            System.out.println("6. Exit");
             System.out.println("**************************************************************");
             System.out.println("**************************************************************");
             choice = in.nextInt();
-            if ((choice < 1) || (choice > 6)) System.out.println("Μη έγκυρη επιλογή!");
+            if ((choice < 1) || (choice > 6)) System.out.println("Invalid choice!");
 
             switch (choice) {
                 case 1:
-                    System.out.println("Επιλέξατε Αναζήτηση.");
+                    System.out.println("You chose Contact Search.");
 
                     loop: do {
-                        System.out.println("Δώστε τον αριθμό που αντιστοιχεί σε μία από τις παρακάτω επιλογές: ");
-                        System.out.println("1. Αναζήτηση με βάση το ονοματεπώνυμο");
-                        System.out.println("2. Αναζήτηση με βάση τον αριθμό τηλεφώνου");
-                        System.out.println("3. Ακύρωση");
+                        System.out.println("Enter the number of one of the following choices: ");
+                        System.out.println("1. Search by name");
+                        System.out.println("2. Search by phone number");
+                        System.out.println("3. Cancel");
 
                         searchType = in.nextInt();
 
                         switch (searchType){
                             case 1:
-                                System.out.println("Παρακαλώ δώστε επώνυμο:");
+                                System.out.println("Please give lastname:");
                                 lastName = in.next();
-                                System.out.println("Παρακαλώ δώστε όνομα:");
+                                System.out.println("Please give firstname:");
                                 firstName = in.next();
 
                                 position = getIndexByName(lastName, firstName);
 
                                 if (position == -1) {
-                                    System.out.println("Η επαφή δε βρέθηκε.");
+                                    System.out.println("Contact not found.");
                                 }
                                 else {
-                                    System.out.printf("Η επαφή %s %s βρέθηκε στη θέση %d και αντιστοιχεί στον αριθμό τηλεφώνου: %s%n", lastName, firstName, position, contacts[position][2]);
+                                    System.out.printf("Contact %s %s found in position %d and correspond to the phone number: %s%n", lastName, firstName, position, contacts[position][2]);
                                 }
                                 break;
                             case 2:
-                                System.out.println("Παρακαλώ δώστε αριθμό τηλεφώνου:");
+                                System.out.println("Please give phone number: ");
                                 phoneNumber = in.next();
 
 
                                 position = getIndexByPhoneNumber(phoneNumber);
 
                                 if (position == -1) {
-                                    System.out.println("Ο αριθμός δεν αντιστοιχεί σε επαφή.");
+                                    System.out.println("The given number does not correspond to a contact.");
                                 }
                                 else {
-                                    System.out.printf("Ο αριθμός τηλεφώνου: %s αντιστοιχεί στην επαφή: %s %s, στη θέση %d%n", contacts[position][2], contacts[position][0], contacts[position][1], position);
+                                    System.out.printf("The phone number: %s corresponds to the contact: %s %s, in position %d%n", contacts[position][2], contacts[position][0], contacts[position][1], position);
                                 }
                                 break;
                             case 3:
-                                System.out.println("Ακύρωση ενέργειας");
+                                System.out.println("Canceling");
                                 break loop;
                             default:
-                                System.out.println("Μη έγκυρη επιλογή!");
+                                System.out.println("Invalid choice!");
                                 break;
                         }
 
@@ -136,99 +134,99 @@ public class ContactList {
 
                     break;
                 case 2:
-                    System.out.println("Επιλέξατε Εισαγωγή Επαφής.");
-                    System.out.println("Παρακαλώ δώστε επώνυμο:");
+                    System.out.println("You chose Create New Contact.");
+                    System.out.println("Please give lastname:");
                     lastName = in.next();
-                    System.out.println("Παρακαλώ δώστε όνομα:");
+                    System.out.println("Please give firstname:");
                     firstName = in.next();
 
                     position = getIndexByName(lastName, firstName);
 
                     if (position == -1) {
-                        System.out.println("Παρακαλώ δώστε τον αριθμό τηλεφώνου της επαφής:");
+                        System.out.println("Please given contact's phone number:");
                         phoneNumber = in.next();
 
                         phonePosition = getIndexByPhoneNumber(phoneNumber);
 
                         if (phonePosition != -1) {
-                            System.out.printf("Ο αριθμός τηλεφώνου υπάρχει ήδη, στην επαφή: %s %s", contacts[phonePosition][0], contacts[phonePosition][1]);
+                            System.out.printf("Phone number already exists, in contact: %s %s", contacts[phonePosition][0], contacts[phonePosition][1]);
                             break;
                         }
 
                         insertContact(lastName, firstName, phoneNumber);
 
-                        System.out.println("Η επαφή δημιουργήθηκε επιτυχώς!");
+                        System.out.println("Contact successfully created!");
                     } else {
-                        System.out.println("Το ονοματεπώνυμο που δώσατε υπάρχει ήδη!");
+                        System.out.println("The name you entered already exists!");
                     }
 
                     break;
                 case 3:
-                    System.out.println("Επιλέξατε Ενημέρωση Επαφής.");
-                    System.out.println("Παρακαλώ δώστε επώνυμο:");
+                    System.out.println("You chose Contact Update.");
+                    System.out.println("Please gie lastname:");
                     lastName = in.next();
-                    System.out.println("Παρακαλώ δώστε όνομα:");
+                    System.out.println("Please give firstname:");
                     firstName = in.next();
 
                     position = getIndexByName(lastName, firstName);
                     if (position == -1) {
-                        System.out.println("Δεν υπάρχει υπάρχει επαφή με τα στοιχεία που δώσατε!");
+                        System.out.println("There is not any contact having the given details!");
                         return;
                     }
 
                     for (;;){
                         do {
-                            System.out.println("Δώστε τον αριθμό που αντιστοιχεί σε μία από τις παρακάτω επιλογές:");
-                            System.out.println("1. Αλλαγή επωνύμου");
-                            System.out.println("2. Αλλαγή ονόματος");
-                            System.out.println("3. Αλλαγή τηλεφώνου");
-                            System.out.println("4. Ακύρωση");
+                            System.out.println("Please give the corresponding number of one of the following choices:");
+                            System.out.println("1. Change lastname.");
+                            System.out.println("2. Change firstname.");
+                            System.out.println("3. Change phone number.");
+                            System.out.println("4. Cancel.");
 
                             updateField = in.nextInt();
 
-                            if (updateField < 1 || updateField > 4) System.out.println("Μη έγκυρη επιλογή!");
+                            if (updateField < 1 || updateField > 4) System.out.println("Invalid choice!");
 
                         } while (updateField < 1 || updateField > 4);
 
                         if (updateField == 4) {
-                            System.out.println("Ακύρωση ενέργειας.");
+                            System.out.println("Canceling.");
                             break;
                         }
 
-                        System.out.print("Παρακαλώ δώστε νέο ");
+                        System.out.print("Please give the new ");
 
                         switch (updateField) {
                             case 1:
-                                System.out.println("επώνυμο:");
+                                System.out.println("lastname:");
                                 break;
                             case 2:
-                                System.out.println("όνομα:");
+                                System.out.println("firstname:");
                                 break;
                             case 3:
-                                System.out.println("αριθμό τηλεφώνου:");
+                                System.out.println("phone number:");
                                 break;
                         }
 
                         updateContact(position,updateField - 1, in.next());
 
-                        System.out.println("Επιτυχής ενημέρωση επαφής");
-                        System.out.printf("Η ενημερωμένη επαφή είναι: {%s, %s, %s}%n", contacts[position][0], contacts[position][1], contacts[position][2]);
+                        System.out.println("Contact updated successfully");
+                        System.out.printf("The updated contact is: {%s, %s, %s}%n", contacts[position][0], contacts[position][1], contacts[position][2]);
 
-                        System.out.println("Θέλετε να κάνετε άλλη αλλαγή;");
-                        System.out.println("Δώστε 0 για έξοδο ή οποιαδήποτε άλλη τιμή για να συνεχίσετε");
+                        System.out.println("Would you like to make any more changes?");
+                        System.out.println("Enter 0 for exit or any other value to continue");
                         if (in.nextInt() == 0) break;
                     }
                     break;
                 case 4:
-                    System.out.println("Επιλέξατε Διαγραφή Επαφής.");
-                    System.out.println("Παρακαλώ δώστε επώνυμο:");
+                    System.out.println("You chose Delete Contact.");
+                    System.out.println("Please give lastname:");
                     lastName = in.next();
-                    System.out.println("Παρακαλώ δώστε όνομα:");
+                    System.out.println("Please give firstname:");
                     firstName = in.next();
 
                     position = getIndexByName(lastName, firstName);
                     if (position == -1) {
-                        System.out.println("Δεν υπάρχει υπάρχει επαφή με τα στοιχεία που δώσατε!");
+                        System.out.println("There is no contact with the given details!");
                         return;
                     }
 
@@ -240,22 +238,22 @@ public class ContactList {
 
                     deleteContact(position);
 
-                    System.out.printf("Η επαφή: %s διαγράφηκε επιτυχώς.%n", deleted);
+                    System.out.printf("The contact: %s is successfully deleted.%n", deleted);
 
                     break;
                 case 5:
-                    System.out.println("Επιλέξατε Εμφάνιση επαφών.");
+                    System.out.println("You chose Display Contact List.");
 
                     do {
-                        System.out.println("Δώστε 0 για αύξουσα ή 1 για φθίνουσα σειρά: ");
+                        System.out.println("Enter 0 for ascending or 1 for descending order: ");
 
                         order = in.nextInt();
 
-                        if ((order != 1) && (order != 0)) System.out.println("Μη έγκυρη επιλογή!");
+                        if ((order != 1) && (order != 0)) System.out.println("Invalid choice!");
 
                     } while ((order != 1) && (order != 0));
 
-                    System.out.println("***************** {Επώνυμο, Όνομα, Τηλέφωνο} *****************");
+                    System.out.println("***************** {Lastname, Firstname, Phone Number} *****************");
 
                     sortAndDisplayContacts(order);
 
@@ -269,11 +267,11 @@ public class ContactList {
     }
 
     /**
-     * Αναζητά αν υπάρχει επαφή με το ονοματεπώνυμο που δέχεται ως είσοδο.
+     * Searches for a contact with the inputed lastname and firstname.
      *
-     * @param lastname      Επώνυμο επαφής
-     * @param firstname     Όνομα επαφής
-     * @return              Θέση επαφής ή -1 αν δε βρεθεί
+     * @param lastname      Contact's lastname.
+     * @param firstname     Contact's firstname.
+     * @return              Contact's position or -1 if it is not found.
      */
     public static int getIndexByName(String lastname, String firstname) {
 
@@ -285,10 +283,10 @@ public class ContactList {
     }
 
     /**
-     * Αναζητά αν υπάρχει επαφή με τον αριθμό τηλεφώνου που δέχεται ως είσοδο.
+     * Searches for a contact with the inputed phone number.
      *
-     * @param phoneNumber       Αριθμός τηλεφώνου
-     * @return                  Θέση επαφής ή -1 αν δε βρεθεί
+     * @param phoneNumber       Contact's phone number
+     * @return                  Contact's position or -1 if it is not found.
      */
     public static int getIndexByPhoneNumber(String phoneNumber) {
 
@@ -300,11 +298,11 @@ public class ContactList {
     }
 
     /**
-     * Δημιουργεί νέα επαφή κι αυξάνει το δείκτη της τελευταίας θέσης κατά ένα
+     * Creates new contact and increases the lastContact variable's value by 1.
      *
-     * @param lastName      Επώνυμο νέας επαφής
-     * @param firstName     Όνομα νέας επαφής
-     * @param phoneNumber   Αριθμός τηλεφώνου νέας επαφής
+     * @param lastName      New contact's lastname.
+     * @param firstName     New contact's firstname.
+     * @param phoneNumber   New contact's phone number.
      */
     public static void insertContact(String lastName, String firstName, String phoneNumber) {
         contacts[++lastContact] [0] = lastName;
@@ -313,22 +311,23 @@ public class ContactList {
     }
 
     /**
-     * Ενημερώνει ένα πεδίο της επιλεγμένης επαφής
+     * Updates a chosen contact's field.
      *
-     * @param position      Θέση επαφής
-     * @param updateField   Πεδίο προς ενημέρωση
-     * @param newValue      Νέα τιμή
+     * @param position      Contact's position.
+     * @param updateField   Field to update.
+     * @param newValue      Field's new value.
      */
     public static void updateContact (int position, int updateField, String newValue) {
         contacts[position][updateField] = newValue;
     }
 
     /**
-     * Διαγράφει την επιλεγμένη επαφή. Στην πραγματικότητα μετατοπίζει όλα τα στοιχεία που βρίσκονται
-     * κάτω από αυτήν κατά μία θέση πάνω και μειώνει το δείκτη τελευταίας θέσης κατά ένα.
-     * Τα στοιχεία της επαφής ουσιαστικά δε διαγράφονται, αλλά μετατοπίζονται στη θέση lastContact + 1!
      *
-     * @param position      Θέση επαφής προς διαγραφή
+     * Deletes a chosen contact. It achieves that by moving each following contact by one position
+     * upwards and decreasing the lastContact's value by 1. This way, the deleted contact is
+     * moved at the bottom of the list, outside the bounds given by lastContact pointer.
+     *
+     * @param position      To be deleted contact's position.
      */
     public static void deleteContact(int position) {
 
@@ -343,9 +342,9 @@ public class ContactList {
     }
 
     /**
-     * Εκχωρεί τις επαφές σ ένα προσωρινό πίνακα, τον οποίο ταξινομεί με βάση το επώνυμο
-     * και εκτυπώνει τα ταξινομημένα, πλέον, στοιχεία.
-     *  @param order             Επιλογή αύξουσας ή φθίνουσας ταξινόμησης
+     * Copies all the contacts to a temporary array, which is being sorted by lastname.
+     * The elements of the sorted array are being displayed.
+     *  @param order             Choice of ascending or descending order.
      *
      */
     public static void sortAndDisplayContacts(int order) {
