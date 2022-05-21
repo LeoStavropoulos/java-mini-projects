@@ -1,7 +1,7 @@
 # **Java Mini Projects (Structured Programming)**
 #### Structured Programming mini-projects, developed for Coding Factory's Java course. 
 - ### <u>Project 1: CombinationSixFiltered</u>
-    Reads at least 6 and at maximum 49 integers from a file (eg. input.txt), that have values from 1 to 49. 
+    Reads at least 6 and at maximum 49 integers from a file (e.g. input.txt), that have values from 1 to 49. 
     They are inserted in an array, which, in turn, it is being sorted.
     All the possible sextets are produced, and they are being filtered by the following criteria:
     1. There should not be more than 4 even numbers.
@@ -10,7 +10,7 @@
     4. There should not be more than 3 numbers that have the same final digit.
     5. There should not be more than 3 numbers in the same ten.  
     
-    Finally, the filtered combinations are being printed in a file (eg. output.txt).
+    Finally, the filtered combinations are being printed in a file (e.g. output.txt).
 - ### <u>Project 2: ContactList</u>
     Contact List management system. It can store up to 500 contacts, having Lastname, Firstname and
     Phone Number fields. Each contact should be unique, meaning that there should not be any other
@@ -22,7 +22,7 @@
     - *Contact Deletion*, provided that the given contact exists.
     - *Contact List Display*, sorted by lastname, either in ascending or descending order.
 - ### <u>Project 3: FileCharReader</u>
-  Reads the characters of a file (eg. input.txt) and it stores them in a 256X2 array, so that,
+  Reads the characters of a file (e.g. input.txt) and it stores them in a 256X2 array, so that,
   in each row, the first column refers to each unique character read and the second one to the number
   of times that character exists in the file. Whether the file contains more than 256 unique 
   characters, the reading process is terminated and the total number of read characters is returned.
@@ -53,10 +53,21 @@
   potentially happen to each copied array, after a modification in the original array.
 - ### <u>Project 8: TicTacToe</u>
   A console-based version of the classical Tic Tac Toe game. 
-
-  
+  Two players choose, in turns, a position on a 3X3 grid. If this is a valid move, 
+  it is displayed as the correspondent mark, X or O, on the 3X3 grid. The game ends,
+  if a player create a triplet of their marks, horizontally, vertically, or diagonally,
+  or if there are no empty spaces on the grid. When the players choose not to play any
+  more game, some statistics are being displayed, showing the number of wins of each 
+  player, as well as the number of draws.
 - ### <u>Project 9: Encryption-Decryption</u>
-  An Encryption - Decryption system.
+  An Encryption - Decryption system. A message given by the user is encrypted and
+  saved in a file, e.g. encrypted.txt. In turn, a second programme read the encrypted
+  file, it decrypts it and shows the initial message.
 
+  The algorithm used for the encryption is the following:
+  The first character is encoded to the corresponding ASCII number. Each, following
+  character is encoded to the modulus of the summary of its ordinal number and its
+  previous character's cipher, divided by the encryption key.
 - ### <u>Project 10: BookingSystem</u>
-  A simple theater booking management system
+  A simple theater booking management system. It displays the theater's seat plan,
+  giving the ability to the user to book a place or cancel an existing booking.
