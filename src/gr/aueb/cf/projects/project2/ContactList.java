@@ -19,11 +19,13 @@ public class ContactList {
     static String[][] contacts = new String[500][3];
     static int lastContact = -1;
 
+    final static String HL = "**************************************************************";
+
 
     public static void main(String[] args) {
 
         runApp();
-        System.out.println("**************************************************************");
+        System.out.println(HL);
         System.out.println("******************* Exiting programme ******************");
 
     }
@@ -46,6 +48,10 @@ public class ContactList {
         String phoneNumber = "";
         String deleted = "{";
 
+        // Reusable output elements
+        final String INVALID = "Invalid choice!";
+        final String FIRSTNAME = "Please give firstname:";
+        final String LASTNAME = "Please give lastname:";
 
         //TEST DATA ------------------------------------------------------
 
@@ -67,7 +73,7 @@ public class ContactList {
         System.out.println("********************** Contact List **********************");
 
         for(;;) {
-            System.out.println("**************************************************************");
+            System.out.println(HL);
             System.out.println("Please enter an integer, corresponding to one of the following choices: ");
             System.out.println("1. Search Contacts");
             System.out.println("2. Create New Contact");
@@ -75,16 +81,16 @@ public class ContactList {
             System.out.println("4. Delete Contact");
             System.out.println("5. Display Contact List");
             System.out.println("6. Exit");
-            System.out.println("**************************************************************");
-            System.out.println("**************************************************************");
+            System.out.println(HL);
+            System.out.println(HL);
             choice = in.nextInt();
-            if ((choice < 1) || (choice > 6)) System.out.println("Invalid choice!");
+            if ((choice < 1) || (choice > 6)) System.out.println(INVALID);
 
             switch (choice) {
                 case 1:
                     System.out.println("You chose Contact Search.");
 
-                    loop: do {
+                     do {
                         System.out.println("Enter the number of one of the following choices: ");
                         System.out.println("1. Search by name");
                         System.out.println("2. Search by phone number");
@@ -94,9 +100,9 @@ public class ContactList {
 
                         switch (searchType){
                             case 1:
-                                System.out.println("Please give lastname:");
+                                System.out.println(LASTNAME);
                                 lastName = in.next();
-                                System.out.println("Please give firstname:");
+                                System.out.println(FIRSTNAME);
                                 firstName = in.next();
 
                                 position = getIndexByName(lastName, firstName);
@@ -124,20 +130,20 @@ public class ContactList {
                                 break;
                             case 3:
                                 System.out.println("Canceling");
-                                break loop;
+                                break;
                             default:
-                                System.out.println("Invalid choice!");
+                                System.out.println(INVALID);
                                 break;
                         }
 
-                    } while ((searchType != 1) && (searchType != 2));
+                    } while ((searchType != 1) && (searchType != 2) && (searchType != 3));
 
                     break;
                 case 2:
                     System.out.println("You chose Create New Contact.");
-                    System.out.println("Please give lastname:");
+                    System.out.println(LASTNAME);
                     lastName = in.next();
-                    System.out.println("Please give firstname:");
+                    System.out.println(FIRSTNAME);
                     firstName = in.next();
 
                     position = getIndexByName(lastName, firstName);
@@ -163,9 +169,9 @@ public class ContactList {
                     break;
                 case 3:
                     System.out.println("You chose Contact Update.");
-                    System.out.println("Please gie lastname:");
+                    System.out.println(LASTNAME);
                     lastName = in.next();
-                    System.out.println("Please give firstname:");
+                    System.out.println(FIRSTNAME);
                     firstName = in.next();
 
                     position = getIndexByName(lastName, firstName);
@@ -184,7 +190,7 @@ public class ContactList {
 
                             updateField = in.nextInt();
 
-                            if (updateField < 1 || updateField > 4) System.out.println("Invalid choice!");
+                            if (updateField < 1 || updateField > 4) System.out.println(INVALID);
 
                         } while (updateField < 1 || updateField > 4);
 
@@ -221,7 +227,7 @@ public class ContactList {
                     System.out.println("You chose Delete Contact.");
                     System.out.println("Please give lastname:");
                     lastName = in.next();
-                    System.out.println("Please give firstname:");
+                    System.out.println(FIRSTNAME);
                     firstName = in.next();
 
                     position = getIndexByName(lastName, firstName);
@@ -249,7 +255,7 @@ public class ContactList {
 
                         order = in.nextInt();
 
-                        if ((order != 1) && (order != 0)) System.out.println("Invalid choice!");
+                        if ((order != 1) && (order != 0)) System.out.println(INVALID);
 
                     } while ((order != 1) && (order != 0));
 
@@ -267,7 +273,7 @@ public class ContactList {
     }
 
     /**
-     * Searches for a contact with the inputed lastname and firstname.
+     * Searches for a contact with the inputted lastname and firstname.
      *
      * @param lastname      Contact's lastname.
      * @param firstname     Contact's firstname.
@@ -283,7 +289,7 @@ public class ContactList {
     }
 
     /**
-     * Searches for a contact with the inputed phone number.
+     * Searches for a contact with the inputted phone number.
      *
      * @param phoneNumber       Contact's phone number
      * @return                  Contact's position or -1 if it is not found.
@@ -367,7 +373,7 @@ public class ContactList {
             System.out.println("\b\b}");
         }
 
-        System.out.println("**************************************************************");
+        System.out.println(HL);
 
     }
 }
